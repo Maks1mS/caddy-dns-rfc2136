@@ -23,7 +23,8 @@ To use this module for the ACME DNS challenge, [configure the ACME issuer in you
                 "key": "cWnu6Ju9zOki4f7Q+da2KKGo0KOXbCf6Pej6hW3geC4=",
                 "key_name": "test",
                 "key_alg": "hmac-sha256",
-                "server": "1.2.3.4:53"
+                "server": "1.2.3.4:53",
+                "net": "udp"
             }
         }
     }
@@ -40,6 +41,7 @@ or with the Caddyfile:
         key_alg "hmac-sha256"
         key "cWnu6Ju9zOki4f7Q+da2KKGo0KOXbCf6Pej6hW3geC4="
         server "1.2.3.4:53"
+        net "udp"
     }
 }
 ```
@@ -52,6 +54,10 @@ tls {
         key_alg "hmac-sha256"
         key "cWnu6Ju9zOki4f7Q+da2KKGo0KOXbCf6Pej6hW3geC4="
         server "1.2.3.4:53"
+        net "udp"
     }
 }
 ```
+
+The `net` subdirective is optional and selects the transport protocol for
+dynamic updates: `"tcp"` (default) or `"udp"`.

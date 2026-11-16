@@ -35,6 +35,8 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				dst = &p.KeyAlg
 			case "server":
 				dst = &p.Server
+			case "net":
+				dst = &p.Net
 			default:
 				return d.Errf("unrecognized subdirective '%s'", d.Val())
 			}
@@ -60,6 +62,11 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	if p.Server == "" {
 		return d.Err("rfc2136: missing server")
 	}
+	switch p.Net {
+	case "", "tcp", "udp":
+	default:
+		return d.Errf("rfc2136: invalid net '%s': must be \"tcp\" or \"udp\"", p.Net)
+	}
 
 	return nil
 }
@@ -71,6 +78,7 @@ func (p *Provider) Provision(_ caddy.Context) error {
 	p.Key = repl.ReplaceAll(p.Key, "")
 	p.KeyAlg = repl.ReplaceAll(p.KeyAlg, "")
 	p.Server = repl.ReplaceAll(p.Server, "")
+	p.Net = repl.ReplaceAll(p.Net, "")
 
 	return nil
 }
